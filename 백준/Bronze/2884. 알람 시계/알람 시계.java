@@ -9,14 +9,13 @@ public class Main {
         int H = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
 
-        if (M >= 45) {
-            M = M - 45;
-        } else {
-            H = H - 1;
-            M = M + 15;
-            if (H < 0)
-                H = 23;
+        int total = H*60 + M;
+        total -= 45;
+
+        if(total<0){
+            total +=60*24;
         }
-        System.out.print(H + " " + M);
+        System.out.println(total / 60 + " " + total % 60);
+
     }
 }
