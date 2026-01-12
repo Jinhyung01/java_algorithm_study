@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -7,13 +6,18 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int[] arr = new int[n];
+
+        int max = Integer.MIN_VALUE;
+        int min = Integer.MAX_VALUE;
 
         for (int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
+            int num = Integer.parseInt(st.nextToken());
+            if (num > max)
+                max = num;
+            if (num < min)
+                min = num;
         }
-        Arrays.sort(arr);
-        System.out.print(arr[0] + " " + arr[n - 1]);
+        System.out.print(min + " " + max);
 
     }
 }
