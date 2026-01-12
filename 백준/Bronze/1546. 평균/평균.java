@@ -7,22 +7,16 @@ public class Main {
         int n = Integer.parseInt(br.readLine());
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int[] arr = new int[n];
-
-        for (int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
-        }
         int max = Integer.MIN_VALUE;
-
         int sum = 0;
+
         for (int i = 0; i < n; i++) {
-            if (arr[i] > max) {
-                max = arr[i];
-            }
-            sum += arr[i];
+            int score = Integer.parseInt(st.nextToken());
+            max = Math.max(max, score);
+            sum += score;
         }
         double result = (double) (sum) / max * 100 / n;
-        System.out.println(result);
+        System.out.print(result);
 
     }
 }
