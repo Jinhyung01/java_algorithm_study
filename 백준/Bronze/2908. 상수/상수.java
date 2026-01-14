@@ -8,9 +8,15 @@ public class Main {
 
         String a = st.nextToken();
         String b = st.nextToken();
+        System.out.print(Math.max(reverseInt(a), reverseInt(b)));
 
-        int i1 = Integer.parseInt(new StringBuilder(a).reverse().toString());
-        int i2 = Integer.parseInt(new StringBuilder(b).reverse().toString());
-        System.out.print(Math.max(i1, i2));
+    }
+    // "123" -> 321로바꿀려면 뒤에서부터 읽고 result에 10씩 곱해줘야함
+    static int reverseInt(String s) {
+        int result = 0;
+        for (int i = s.length() - 1; i >= 0; i--) {
+            result = result * 10 + s.charAt(i) - '0';
+        }
+        return result;
     }
 }
