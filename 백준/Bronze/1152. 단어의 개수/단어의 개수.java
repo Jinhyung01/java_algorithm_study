@@ -1,13 +1,23 @@
 import java.io.*;
-import java.util.StringTokenizer;
 
 public class Main {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String str = br.readLine();
-        StringTokenizer st = new StringTokenizer(str);
+        String line = br.readLine();
+        int cnt = 0;
+        boolean inWord = false;
 
-        System.out.print(st.countTokens());
-
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+            if (c != ' ') {
+                if (!inWord) {
+                    cnt++;
+                    inWord = true;
+                }
+            } else {
+                inWord = false;
+            }
+        }
+        System.out.print(cnt);
     }
 }
