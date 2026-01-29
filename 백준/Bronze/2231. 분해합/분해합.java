@@ -7,15 +7,16 @@ public class Main {
         int N = Integer.parseInt(br.readLine());
 
         int result = 0;
-        for (int i = 1; i <N; i++) {
-            String str = String.valueOf(i);
+        for (int i = 1; i < N; i++) {
             int sum = i;
+            int number = i;
 
-            for (int a = 0; a < str.length(); a++) {
-                int n = str.charAt(a) - '0';
-                sum += n;
+            while (number > 0) {
+                sum += number % 10;
+                number /= 10;
             }
-            if(sum == N){
+
+            if (sum == N) {
                 result = i;
                 break;
             }
@@ -23,4 +24,3 @@ public class Main {
         System.out.println(result);
     }
 }
-
