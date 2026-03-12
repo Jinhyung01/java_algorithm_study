@@ -9,15 +9,15 @@ public class Main {
         int N = Integer.parseInt(st.nextToken());
         int K = Integer.parseInt(st.nextToken());
         
-        ArrayList<Integer> list = new ArrayList<>(N);
+        Integer[] A = new Integer[N];
         
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
-            list.add(Integer.parseInt(st.nextToken()));
+            A[i] = Integer.parseInt(st.nextToken());
         }
         
-        Collections.sort(list);
+        Arrays.sort(A);
         
-        System.out.println(list.get(K - 1));
+        System.out.println(A[K - 1]);
     }
 }
