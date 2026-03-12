@@ -1,21 +1,23 @@
-import java.util.*;
 import java.io.*;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    static int K = 2000001;
+
+    public static void main(String[] args) throws Exception {
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
 
-        Integer[] arr = new Integer[N];
+        int[] A = new int[K];
         for (int i = 0; i < N; i++) {
-            arr[i] = Integer.parseInt(br.readLine());
+            A[Integer.parseInt(br.readLine()) + 1000000]++;
         }
-        Arrays.sort(arr);
-
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < N; i++) {
-            sb.append(arr[i]).append('\n');
+        for (int i = 0; i < K; i++) {
+            if (A[i]-- > 0) {
+                sb.append(i - 1000000).append('\n');
+            }
         }
-        System.out.println(sb);
+        System.out.print(sb);
     }
 }
