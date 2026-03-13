@@ -1,37 +1,69 @@
 import java.io.*;
 
 public class Main {
-    static int K = 2000001;
-    static int OFFSET = 1000000;
-
     public static void main(String[] args) throws Exception {
-
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
-        int[] A = new int[N];         
-        int[] count = new int[K];    
-        int[] result = new int[N];   
-        
+        int[] A = new int[N];
         for (int i = 0; i < N; i++) {
             A[i] = Integer.parseInt(br.readLine());
-            count[A[i] + OFFSET]++;
         }
-        for (int i = 1; i < K; i++) {
-            count[i] += count[i - 1];
-        }
-
-        for (int i = N - 1; i >= 0; i--) {
-            int value = A[i];
-            int index = value + OFFSET;
-            
-            count[index]--;
-            result[count[index]] = value;
-        }
-
+        mergeSort(A, 0, N - 1);
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < N; i++) {
-            sb.append(result[i]).append('\n');
+            sb.append(A[i]).append('\n');
         }
-        System.out.print(sb);
+        System.out.println(sb);
+
+    }
+
+    public static void mergeSort(int[] arr, int left, int right) {
+        if (left < right) {
+            int mid = (left + right) / 2;
+            mergeSort(arr, left, mid);
+            mergeSort(arr, mid + 1, right);
+
+            merge(arr, left, mid, right);
+        }
+    }
+
+    private static void merge(int[] arr, int left, int mid, int right) {
+        int n1 = mid - left + 1;
+        int n2 = right - mid;
+
+        int[] L = new int[n1];
+        int[] R = new int[n2];
+
+        for (int i = 0; i < n1; i++) {
+            L[i] = arr[left + i];
+        }
+        for (int j = 0; j < n2; j++) {
+            R[j] = arr[mid + 1 + j];
+        }
+
+        int i = 0;
+        int j = 0;
+        int k = left;
+
+        while (i < n1 && j < n2) {
+            if (L[i] <= R[j]) {
+                arr[k] = L[i];
+                i++;
+            } else {
+                arr[k] = R[j];
+                j++;
+            }
+            k++;
+        }
+        while (i < n1) {
+            arr[k] = L[i];
+            i++;
+            k++;
+        }
+        while (j < n2) {
+            arr[k] = R[j];
+            j++;
+            k++;
+        }
     }
 }
