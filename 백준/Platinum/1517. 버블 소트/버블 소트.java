@@ -3,11 +3,14 @@ import java.util.StringTokenizer;
 
 public class Main {
     public static long result = 0;
+    public static int[] A;
+    public static int[] tmp;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
-        int[] A = new int[N];
+        A = new int[N];
+        tmp = new int[N];
         StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
             A[i] = Integer.parseInt(st.nextToken());
@@ -23,48 +26,28 @@ public class Main {
             mergeSort(arr, left, mid);
             mergeSort(arr, mid + 1, right);
 
-            merge(arr, left, mid, right);
+            merge(left, mid, right);
         }
     }
 
-    private static void merge(int[] arr, int left, int mid, int right) {
-        int n1 = mid - left + 1;
-        int n2 = right - mid;
+    private static void merge(int left, int mid, int right) {
+        int i = left;      
+        int j = mid + 1; 
+        int k = left;      
 
-        int[] L = new int[n1];
-        int[] R = new int[n2];
-
-        for (int i = 0; i < n1; i++) {
-            L[i] = arr[left + i];
-        }
-        for (int j = 0; j < n2; j++) {
-            R[j] = arr[mid + 1 + j];
-        }
-
-        int i = 0;
-        int j = 0;
-        int k = left;
-
-        while (i < n1 && j < n2) {
-            if (L[i] <= R[j]) {
-                arr[k] = L[i];
-                i++;
+        while (i <= mid && j <= right) {
+            if (A[i] <= A[j]) {
+                tmp[k++] = A[i++];
             } else {
-                arr[k] = R[j];
-                result += (n1 - i);
-                j++;
+                tmp[k++] = A[j++];
+                result += (mid - i + 1);
             }
-            k++;
         }
-        while (i < n1) {
-            arr[k] = L[i];
-            i++;
-            k++;
-        }
-        while (j < n2) {
-            arr[k] = R[j];
-            j++;
-            k++;
+        while (i <= mid) tmp[k++] = A[i++];
+        while (j <= right) tmp[k++] = A[j++];
+
+        for (int l = left; l <= right; l++) {
+            A[l] = tmp[l];
         }
     }
 }
