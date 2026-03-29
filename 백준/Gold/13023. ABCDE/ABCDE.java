@@ -2,10 +2,10 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-
     static ArrayList<Integer>[] adj;
     static int N;
     static boolean[] visited;
+    static boolean isExist = false;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -25,33 +25,29 @@ public class Main {
             int b = Integer.parseInt(st.nextToken());
             addEdge(a, b);
         }
-
-        boolean isExist = false;
         for (int i = 0; i < N; i++) {
-            if (dfs(1, i)) {
-                isExist = true;
+            dfs(1, i);
+            if (isExist)
                 break;
-            }
-            Arrays.fill(visited, false);
         }
+        Arrays.fill(visited, false);
         System.out.println(isExist ? 1 : 0);
-
     }
 
-    private static boolean dfs(int depth, int cur) {
+
+    private static void dfs(int depth, int cur) {
         if (depth == 5) {
-            return true;
+            isExist = true;
+            return;
         }
         visited[cur] = true;
         for (int next : adj[cur]) {
             if (!visited[next]) {
-                if (dfs(depth + 1, next)) {
-                    return true;
-                }
+                dfs(depth + 1, next);
+                if(isExist) return;
             }
         }
         visited[cur] = false;
-        return false;
     }
 
     private static void addEdge(int u, int v) {
