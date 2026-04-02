@@ -1,50 +1,49 @@
 import java.io.*;
 import java.util.*;
 
-
 public class Main {
-    public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(br.readLine());
-        StringTokenizer st = new StringTokenizer(br.readLine());
+    static int[] A;
+    static int cnt = 0;
+    static int N;
 
-        int[] A = new int[N];
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        N = Integer.parseInt(br.readLine());
+        A = new int[N];
+        StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
             A[i] = Integer.parseInt(st.nextToken());
         }
+
         Arrays.sort(A);
 
-        int cnt = 0;
         for (int i = 0; i < N; i++) {
-            if (isGoodNumber(A, i))
-                cnt++;
+            isGoodNumber(i);
         }
         System.out.println(cnt);
     }
 
-    public static boolean isGoodNumber(int[] A, int n) {
-        int i = 0;
-        int j = A.length - 1;
-
-
+    private static void isGoodNumber(int index) {
+        int i = 0, j = N - 1;
         while (i < j) {
-            if (i == n) {
+            if (index == i) {
                 i++;
                 continue;
             }
-            if (j == n) {
+            if (index == j) {
                 j--;
                 continue;
             }
             int sum = A[i] + A[j];
-            if (sum > A[n]) {
-                j--;
-            } else if (sum < A[n]) {
+            if (sum < A[index]) {
                 i++;
+            } else if (sum > A[index]) {
+                j--;
             } else {
-                return true;
+                cnt++;
+                break;
             }
         }
-        return false;
+
     }
 }
