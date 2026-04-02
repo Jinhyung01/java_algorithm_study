@@ -1,33 +1,41 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 public class Main {
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         int N = Integer.parseInt(st.nextToken());
         int L = Integer.parseInt(st.nextToken());
-        int[] A = new int[N];
+
         st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < N; i++) {
-            A[i] = Integer.parseInt(st.nextToken());
-        }
+        Deque<Node> deque = new ArrayDeque<>();
 
-        Deque<Integer> dq = new ArrayDeque<>();
         StringBuilder sb = new StringBuilder();
+        for (int i = 1; i <= N; i++) {
+            int n = Integer.parseInt(st.nextToken());
 
-        for (int i = 0; i < N; i++) {
-            while (!dq.isEmpty() && A[dq.peekLast()] >=A[i]) {
-                dq.pollLast();
+            if (!deque.isEmpty() && deque.peekFirst().index <= i - L)
+                deque.pollFirst();
+
+            while (!deque.isEmpty() && deque.peekLast().value > n) {
+                deque.pollLast();
             }
-            dq.offerLast(i);
-            if (dq.peekFirst() <= i - L) {
-                dq.pollFirst();
-            }
-            sb.append(A[dq.peekFirst()]).append(" ");
+
+            deque.offerLast(new Node(i, n));
+            sb.append(deque.peekFirst().value).append(" ");
         }
         System.out.println(sb);
 
+    }
+
+    static class Node {
+        int index;
+        int value;
+
+        public Node(int index, int value) {
+            this.index = index;
+            this.value = value;
+        }
     }
 }
