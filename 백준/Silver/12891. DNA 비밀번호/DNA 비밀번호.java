@@ -1,86 +1,111 @@
 import java.io.*;
 import java.util.*;
 
-
 public class Main {
-    static int[] checkArr = new int[4]; // 비밀번호 체크 배열
-    static int[] myArr = new int[4]; // 현재 상태 배열
-    static int checkSecret = 0; // 몇 개의 문자가 조건을 만족했는지
 
-    public static void main(String[] args) throws Exception {
+    static int[] minimum = new int[4];
+    static int[] current = new int[4];
+    static char[] dna;
+    static int cond = 0;
+    static int result = 0;
+
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
+        int S = Integer.parseInt(st.nextToken());
+        int P = Integer.parseInt(st.nextToken());
 
-        int S_len = Integer.parseInt(st.nextToken()); // 전체 문자열 길이
-        int P_len = Integer.parseInt(st.nextToken()); // 부분 문자열 길이
-        int result = 0;
-
-        char[] dna = br.readLine().toCharArray();
-
+        dna = br.readLine().toCharArray();
         st = new StringTokenizer(br.readLine());
+
         for (int i = 0; i < 4; i++) {
-            checkArr[i] = Integer.parseInt(st.nextToken());
-            // 요구하는 최소개수가 0이라면 이미 조건 만족한것이므로 count++;
-            if (checkArr[i] == 0) {
-                checkSecret++;
-            }
+            int n = Integer.parseInt(st.nextToken());
+            if (n == 0) cond++;
+            minimum[i] = n;
         }
-        // 첫번쨰 윈도우 설정
-        for (int i = 0; i < P_len; i++) {
-            Add(dna[i]);
+        for (int i = 0; i < P; i++) {
+            add(i);
         }
-        if (checkSecret == 4) result++;
+        if (cond == 4) result++;
 
-        // 슬라이딩 윈도우 진행
-        for (int i = P_len; i < S_len; i++) {
-            int j = i - P_len;
-
-            Add(dna[i]); // 오른쪽 끝 추가
-            Remove(dna[j]); // 왼쪽 끝 제거
-            if (checkSecret == 4) result++;
+        int i = 0, j = P;
+        while (j < S) {
+            add(j);
+            remove(i);
+            if (cond == 4) result++;
+            j++;
+            i++;
         }
         System.out.println(result);
     }
 
-    private static void Remove(char c) {
+    private static void remove(int i) {
+        char c = dna[i];
         switch (c) {
-            case 'A':
-                if (myArr[0] == checkArr[0]) checkSecret--;
-                myArr[0]--;
+            case 'A': {
+                if (current[0] == minimum[0]) {
+                    cond--;
+                }
+                current[0]--;
                 break;
-            case 'C':
-                if (myArr[1] == checkArr[1]) checkSecret--;
-                myArr[1]--;
+            }
+            case 'C': {
+                if (current[1] == minimum[1]) {
+                    cond--;
+                }
+                current[1]--;
                 break;
-            case 'G':
-                if (myArr[2] == checkArr[2]) checkSecret--;
-                myArr[2]--;
+            }
+            case 'G': {
+                if (current[2] == minimum[2]) {
+                    cond--;
+                }
+                current[2]--;
                 break;
-            case 'T':
-                if (myArr[3] == checkArr[3]) checkSecret--;
-                myArr[3]--;
+            }
+            case 'T': {
+                if (current[3] == minimum[3]) {
+                    cond--;
+                }
+                current[3]--;
                 break;
+            }
         }
     }
 
-    private static void Add(char c) {
+
+    private static void add(int i) {
+        char c = dna[i];
         switch (c) {
-            case 'A':
-                myArr[0]++;
-                if (myArr[0] == checkArr[0]) checkSecret++;
+            case 'A': {
+                current[0]++;
+                if (current[0] == minimum[0]) {
+                    cond++;
+                }
                 break;
-            case 'C':
-                myArr[1]++;
-                if (myArr[1] == checkArr[1]) checkSecret++;
+            }
+            case 'C': {
+                current[1]++;
+                if (current[1] == minimum[1]) {
+                    cond++;
+                }
                 break;
-            case 'G':
-                myArr[2]++;
-                if (myArr[2] == checkArr[2]) checkSecret++;
+            }
+            case 'G': {
+                current[2]++;
+                if (current[2] == minimum[2]) {
+                    cond++;
+                }
+
                 break;
-            case 'T':
-                myArr[3]++;
-                if (myArr[3] == checkArr[3]) checkSecret++;
+            }
+            case 'T': {
+                current[3]++;
+                if (current[3] == minimum[3]) {
+                    cond++;
+                }
                 break;
+            }
         }
     }
 }
