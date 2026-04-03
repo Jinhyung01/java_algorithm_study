@@ -30,22 +30,12 @@ public class Main {
         }
 
         bfs(1);
-        findMaxLength(V);
         Arrays.fill(dis, -1);
         maxDistance = 0;
         bfs(endNode);
-        findMaxLength(V);
         System.out.println(maxDistance);
     }
 
-    private static void findMaxLength(int V) {
-        for (int i = 1; i <= V; i++) {
-            if (maxDistance < dis[i]) {
-                maxDistance = dis[i];
-                endNode = i;
-            }
-        }
-    }
 
     private static void bfs(int start) {
         Queue<Integer> queue = new LinkedList<>();
@@ -54,11 +44,15 @@ public class Main {
         queue.offer(start);
 
         while (!queue.isEmpty()) {
-            int poll = queue.poll();
+            int now = queue.poll();
+            if (dis[now] > maxDistance) {
+                maxDistance = dis[now];
+                endNode = now;
+            }
 
-            for (Node n : adj[poll]) {
+            for (Node n : adj[now]) {
                 if (dis[n.v] == -1) {
-                    dis[n.v] = dis[poll] + n.dis;
+                    dis[n.v] = dis[now] + n.dis;
                     queue.offer(n.v);
                 }
             }
