@@ -2,17 +2,17 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-
     static ArrayList<Integer>[] adj;
-    static int N;
     static boolean[] visited;
+    static boolean isExist = false;
+    static int N, M;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-
         N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+
         adj = new ArrayList[N];
         for (int i = 0; i < N; i++) {
             adj[i] = new ArrayList<>();
@@ -21,36 +21,31 @@ public class Main {
 
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-            addEdge(a, b);
+            int u = Integer.parseInt(st.nextToken());
+            int v = Integer.parseInt(st.nextToken());
+            addEdge(u, v);
         }
-
-        boolean isExist = false;
         for (int i = 0; i < N; i++) {
-            if (dfs(1, i)) {
-                isExist = true;
-                break;
-            }
+            dfs(1, i);
+            if (isExist) break;
         }
         System.out.println(isExist ? 1 : 0);
 
     }
 
-    private static boolean dfs(int depth, int cur) {
+    private static void dfs(int depth, int cur) {
         if (depth == 5) {
-            return true;
+            isExist = true;
+            return;
         }
         visited[cur] = true;
         for (int next : adj[cur]) {
             if (!visited[next]) {
-                if (dfs(depth + 1, next)) {
-                    return true;
-                }
+                dfs(depth + 1, next);
+                if (isExist) break;
             }
         }
         visited[cur] = false;
-        return false;
     }
 
     private static void addEdge(int u, int v) {
