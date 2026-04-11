@@ -11,17 +11,15 @@ public class Main {
         int cnt = 0;
 
         for (int i = 2; i < prime.length; i++) {
-            if (prime[i]) {
-                long temp = i;
+            if (!prime[i]) continue;
+            long temp = (long)i * i;
 
-                while ((double) i <= (double) B / temp) {
-                    temp *= i;
-                    if (temp >= A) {
-                        cnt++;
-                    }
-                }
+            while (temp <= B) {
+                if (temp >= A) cnt++;
+                if (temp > B / i) break;
+                temp *= i;
             }
-            
+
         }
         System.out.println(cnt);
 
