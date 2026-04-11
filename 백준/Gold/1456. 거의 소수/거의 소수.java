@@ -12,13 +12,16 @@ public class Main {
 
         for (int i = 2; i < prime.length; i++) {
             if (prime[i]) {
-                for (long j = 2; j <= 47; j++) {
-                    long num = (long) Math.pow(i, j);
-                    if (num >= A && num <= B) {
+                long temp = i;
+
+                while ((double) i <= (double) B / temp) {
+                    temp *= i;
+                    if (temp >= A) {
                         cnt++;
                     }
                 }
             }
+            
         }
         System.out.println(cnt);
 
