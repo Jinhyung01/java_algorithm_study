@@ -6,7 +6,6 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
         PriorityQueue<Integer> pq = new PriorityQueue<>();
-
         for (int i = 0; i < N; i++) {
             pq.offer(Integer.parseInt(br.readLine()));
         }
@@ -14,11 +13,9 @@ public class Main {
         while (pq.size() > 1) {
             int first = pq.poll();
             int second = pq.poll();
-
-            int sum = first + second;
-            result += sum;
-
-            pq.offer(sum);
+            int temp = first + second;
+            result += temp;
+            pq.offer(temp);
         }
         System.out.println(result);
     }
