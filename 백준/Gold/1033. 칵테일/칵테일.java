@@ -1,10 +1,10 @@
-import java.util.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class Main {
     static ArrayList<Node>[] adj;
-    static long[] mass;
-    static boolean[] visited;
+    static long[] result;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -13,51 +13,58 @@ public class Main {
         for (int i = 0; i < N; i++) {
             adj[i] = new ArrayList<>();
         }
-        mass = new long[N];
-        visited = new boolean[N];
+        result = new long[N];
         long lcm = 1;
-
         for (int i = 0; i < N - 1; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
             int p = Integer.parseInt(st.nextToken());
             int q = Integer.parseInt(st.nextToken());
-            adj[a].add(new Node(b, p, q));
-            adj[b].add(new Node(a, q, p));
-            lcm *= (long) p * q / gcd(p, q);
+            addEdge(a, b, p, q);
+            lcm *= lcm(p, q);
         }
-        mass[0] = lcm;
-        dfs(0);
-        long gcdVal = mass[0];
-        for (int i = 1; i < N; i++) {
-            gcdVal = gcd(gcdVal, mass[i]);
+        dfs(0, lcm);
+
+        long gcd = 0;
+        for (int i = 0; i < result.length; i++) {
+            gcd = gcd(gcd, result[i]);
         }
+
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < N; i++) {
-            sb.append(mass[i] / gcdVal).append(" ");
+        for (int i = 0; i < result.length; i++) {
+            sb.append(result[i]/gcd).append(" ");
         }
         System.out.print(sb);
     }
 
-    private static void dfs(int cur) {
-        visited[cur] = true;
+    private static void dfs(int cur, long lcm) {
+        result[cur] = lcm;
 
         for (Node n : adj[cur]) {
-            if (!visited[n.b]) {
-                mass[n.b] = mass[cur] * n.q / n.p;
-                dfs(n.b);
+            if (result[n.b]==0) {
+                long r = lcm * n.q / n.p;
+                dfs(n.b, r);
             }
         }
     }
 
-    private static long gcd(long p, long q) {
-        while (q != 0) {
-            long r = p % q;
-            p = q;
-            q = r;
+    static long lcm(long a, long b) {
+        return a * b / gcd(a, b);
+    }
+
+    static long gcd(long a, long b) {
+        while (b != 0) {
+            long r = a % b;
+            a = b;
+            b = r;
         }
-        return p;
+        return a;
+    }
+
+    private static void addEdge(int a, int b, int p, int q) {
+        adj[a].add(new Node(b, p, q));
+        adj[b].add(new Node(a, q, p));
     }
 
     static class Node {
