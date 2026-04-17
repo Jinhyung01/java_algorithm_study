@@ -4,7 +4,8 @@ import java.util.*;
 public class Main {
     static ArrayList<Integer>[] adj;
     static int[] counts;
-    static boolean[] visited;
+    static int[] visited;
+    static int visitToken = 0;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -23,12 +24,12 @@ public class Main {
             int v = Integer.parseInt(st.nextToken());
             adj[v].add(u);
         }
-        visited = new boolean[N + 1];
+        visited = new int[N + 1];
         counts = new int[N + 1];
 
         int maxVal = 0;
         for (int i = 1; i <= N; i++) {
-            Arrays.fill(visited,false);
+            visitToken++;
             counts[i] = bfs(i);
             maxVal = Math.max(maxVal, counts[i]);
         }
@@ -44,13 +45,13 @@ public class Main {
     private static int bfs(int start) {
         Queue<Integer> queue = new ArrayDeque<>();
         queue.offer(start);
-        visited[start] = true;
+        visited[start] = visitToken;
         int count = 1;
         while (!queue.isEmpty()) {
             int now = queue.poll();
             for (int next : adj[now]) {
-                if (!visited[next]) {
-                    visited[next] = true;
+                if (visited[next] != visitToken) {
+                    visited[next] = visitToken;
                     queue.offer(next);
                     count++;
                 }
