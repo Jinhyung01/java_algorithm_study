@@ -1,5 +1,5 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -7,36 +7,37 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         long A = Long.parseLong(st.nextToken());
         long B = Long.parseLong(st.nextToken());
-        boolean[] prime = getPrimeSieve((int) Math.sqrt(B));
-        int cnt = 0;
 
-        for (int i = 2; i < prime.length; i++) {
-            if (!prime[i]) continue;
-            long temp = (long)i * i;
-
-            while (temp <= B) {
-                if (temp >= A) cnt++;
-                if (temp > B / i) break;
-                temp *= i;
+        int max = (int) Math.sqrt(B);
+        boolean[] isPrime = getSieve(max);
+        long cnt = 0;
+        for (int i = 2; i < isPrime.length; i++) {
+            if (isPrime[i]) {
+                long temp = i;
+                while (temp <= B / i) {
+                    temp *= i;
+                    if (temp >= A) {
+                        cnt++;
+                    }
+                }
             }
-
         }
         System.out.println(cnt);
 
 
     }
 
-    public static boolean[] getPrimeSieve(int end) {
-        boolean[] isPrime = new boolean[end + 1];
-        Arrays.fill(isPrime, true);
+    private static boolean[] getSieve(int max) {
+        boolean[] isPrime = new boolean[max + 1];
 
+        Arrays.fill(isPrime, true);
         isPrime[0] = false;
         isPrime[1] = false;
-        for (int i = 2; i * i <= end; i++) {
-            if (!isPrime[i]) {
+
+        for (int i = 2; i * i <= max; i++) {
+            if (!isPrime[i])
                 continue;
-            }
-            for (int j = i * i; j <= end; j += i) {
+            for (int j = i * i; j <= max; j += i) {
                 isPrime[j] = false;
             }
         }
