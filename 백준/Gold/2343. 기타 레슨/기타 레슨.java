@@ -1,7 +1,6 @@
 import java.io.*;
 import java.util.*;
 
-
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -9,39 +8,43 @@ public class Main {
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
 
-        int[] minutes = new int[N];
+        int[] times = new int[N];
         st = new StringTokenizer(br.readLine());
-
-        int low = 0;
-        int high = 0;
-
+        int sum = 0;
+        int maxTime = 0;
         for (int i = 0; i < N; i++) {
-            minutes[i] = Integer.parseInt(st.nextToken());
-            high += minutes[i];
-            if (low < minutes[i])
-                low = minutes[i];
+            int time = Integer.parseInt(st.nextToken());
+            times[i] = time;
+            sum += time;
+            if (time > maxTime) {
+                maxTime = time;
+            }
         }
 
+        int low = maxTime;
+        int high = sum;
+
+        Outer:
         while (low < high) {
             int mid = low + (high - low) / 2;
-            int k = 1;
-            int sum = 0;
+            int size = 0;
+            int count = 1;
 
             for (int i = 0; i < N; i++) {
-                sum += minutes[i];
-                if (mid < sum) {
-                    k++;
-                    sum = minutes[i];
+                size += times[i];
+                if (mid < size) {
+                    count++;
+                    size = times[i];
+                    if (count > M) {
+                        low = mid + 1;
+                        continue Outer;
+                    }
                 }
             }
-            if (k > M) {
-                low = mid + 1;
-            } else {
-                high = mid;
-            }
+            high = mid;
         }
-        System.out.println(low);
 
+        System.out.println(high);
 
     }
 }
