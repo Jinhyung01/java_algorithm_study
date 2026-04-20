@@ -16,7 +16,7 @@ public class Main {
         limit[2] = Integer.parseInt(st.nextToken());
 
 
-        dfs(0, 0, limit[2]);
+        bfs();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < result.length; i++) {
             if (result[i]) {
@@ -26,33 +26,39 @@ public class Main {
         System.out.println(sb);
     }
 
-    private static void dfs(int A, int B, int C) {
-        visited[A][B] = true;
+    private static void bfs() {
+        Queue<int[]> queue = new ArrayDeque<>();
 
-        if (A == 0) {
-            result[C] = true;
-        }
+        queue.offer(new int[]{0, 0, limit[2]});
+        visited[0][0] = true;
+        while (!queue.isEmpty()) {
+            int[] cur = queue.poll();
+            int A = cur[0];
+            int B = cur[1];
+            int C = cur[2];
 
-
-
-        for (int i = 0; i < 6; i++) {
-            int[] current = {A, B, C};
-            int from = fromIdx[i];
-            int to = toIdx[i];
-
-
-            current[to] = current[to] + current[from];
-            current[from] = 0;
-            if (current[to] > limit[to]) {
-                current[from] = current[to] - limit[to];
-                current[to] = limit[to];
+            if (A == 0) {
+                result[C] = true;
             }
 
+            for (int i = 0; i < 6; i++) {
+                int[] next = {A, B, C};
 
-            if (!visited[current[0]][current[1]]) {
-                dfs(current[0], current[1], current[2]);
+                int from = fromIdx[i];
+                int to = toIdx[i];
+
+                next[to] += next[from];
+                next[from] = 0;
+                if (next[to] > limit[to]) {
+                    next[from] = next[to] - limit[to];
+                    next[to] = limit[to];
+                }
+
+                if (!visited[next[0]][next[1]]) {
+                    visited[next[0]][next[1]] =true;
+                    queue.offer(next);
+                }
             }
         }
-
     }
 }
