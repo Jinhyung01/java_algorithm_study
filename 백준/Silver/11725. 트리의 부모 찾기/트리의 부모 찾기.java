@@ -25,7 +25,7 @@ public class Main {
             int v = Integer.parseInt(st.nextToken());
             addEdge(u, v);
         }
-        dfs(1, -1);
+        bfs(1);
         StringBuilder sb = new StringBuilder();
         for (int i = 2; i <= N; i++) {
             sb.append(parent[i]).append("\n");
@@ -33,12 +33,17 @@ public class Main {
         System.out.println(sb);
     }
 
-    private static void dfs(int cur, int pre) {
-        parent[cur] = pre;
-
-        for (int next : adj[cur]) {
-            if (parent[next] == 0) {
-                dfs(next, cur);
+    private static void bfs(int start) {
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(start);
+        parent[start] = -1;
+        while (!q.isEmpty()) {
+            int cur = q.poll();
+            for (int next : adj[cur]) {
+                if (parent[next] == 0) {
+                    parent[next] = cur;
+                    q.offer(next);
+                }
             }
         }
     }
