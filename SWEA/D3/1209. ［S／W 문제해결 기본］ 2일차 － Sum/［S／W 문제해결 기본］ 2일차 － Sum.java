@@ -28,7 +28,7 @@ class Solution {
                     if (i == j) {
                         rDiagSum += A[i][j];
                     }
-                    if (i + j == 4) {
+                    if (i + j == 99) {
                         lDiagSum += A[i][j];
                     }
                 }
