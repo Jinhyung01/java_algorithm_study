@@ -25,8 +25,8 @@ class Solution {
                     dp[i][j] = Math.min(dp[i][j - 1], dp[i - 1][j]) + number[i][j];
                 }
             }
-            sb.append("#").append(t).append(" ").append(dp[N][N]);
+            sb.append("#").append(t).append(" ").append(dp[N][N]).append("\n");
         }
+        System.out.print(sb);
     }
-
 }
